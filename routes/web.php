@@ -1,12 +1,21 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-/*Route::prefix('category')->group(function () {
-    Route::get('/index', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('/store', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/{category}/show', [CategoryController::class, 'show'])->name('categories.show');
-    Route::get('/{category}/update', [CategoryController::class, 'update'])->name('categories.update');
-    Route::get('/{category}/destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});*/
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';
