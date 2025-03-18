@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Post\PostResource;
-use App\Models\Post;
-use App\Models\User;
+use App\Http\Resources\Category\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $posts = PostResource::collection(Post::all())->resolve();
-        return inertia('Admin/Post/Index', compact('posts'));
+        $categories = CategoryResource::collection(Category::all())->resolve();
+        return inertia('Admin/Category/Index', compact('categories'));
     }
 
     /**
@@ -38,16 +37,16 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Category $category)
     {
-        $post = PostResource::make($post)->resolve();
-        return inertia('Admin/Post/Show', compact('post'));
+        $category = CategoryResource::make($category)->resolve();
+        return inertia('Admin/Category/Show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Category $category)
     {
         //
     }
@@ -55,7 +54,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -63,7 +62,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Category $category)
     {
         //
     }

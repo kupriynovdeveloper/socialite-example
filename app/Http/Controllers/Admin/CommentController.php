@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Post\PostResource;
-use App\Models\Post;
-use App\Models\User;
+use App\Http\Resources\Comment\CommentResource;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $posts = PostResource::collection(Post::all())->resolve();
-        return inertia('Admin/Post/Index', compact('posts'));
+        $comments = CommentResource::collection(Comment::all())->resolve();
+        return inertia('Admin/Comment/Index', compact('comments'));
     }
 
     /**
@@ -38,16 +37,16 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Comment $comment)
     {
-        $post = PostResource::make($post)->resolve();
-        return inertia('Admin/Post/Show', compact('post'));
+        $comment = CommentResource::make($comment)->resolve();
+        return inertia('Admin/Comment/Show', compact('comment'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -55,7 +54,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -63,7 +62,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Comment $comment)
     {
         //
     }

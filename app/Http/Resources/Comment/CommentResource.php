@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Comment;
 
+use App\Http\Resources\Post\PostResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +23,7 @@ class CommentResource extends JsonResource
             'view' => $this->view,
             'file_id' => $this->file_id,
             'author' => $this->profile,
+            'post' => $this->post
         ];
     }
 }

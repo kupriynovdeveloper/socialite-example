@@ -41,11 +41,6 @@ class Profile extends Model
         return $this->morphedByMany(Comment::class, 'likeable', 'likes');
     }
 
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);

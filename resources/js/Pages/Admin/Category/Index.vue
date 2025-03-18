@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/vue3";
 export default {
     name: "Index",
     props: {
-        'posts': Array
+        'categories': Array
     },
     components: {
         Link
@@ -15,8 +15,8 @@ export default {
 <template>
     <div class="mt-10">
         <div><h2>Список</h2></div>
-        <div v-for="post in posts" class="mt-10 mb-4 pb-4 border-b border-gray-200">
-            <Link :href="route('admin.posts.show', post.id)">{{ post.title }}</Link>
+        <div v-for="category in categories" class="mt-10 mb-4 pb-4 border-b border-gray-200">
+            <Link :href="route('admin.categories.show', category.id)">{{ category.title }}</Link>
         </div>
     </div>
 </template>
