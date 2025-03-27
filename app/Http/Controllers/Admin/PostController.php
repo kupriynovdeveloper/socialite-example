@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Post\StoreRequest;
 use App\Http\Resources\Post\PostResource;
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\Post\PostService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -15,8 +19,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = PostResource::collection(Post::all())->resolve();
-        return inertia('Admin/Post/Index', compact('posts'));
+        $query = Post::query();
+        $posts = PostResource::collection($query->get())->resolve();
+        $postsCount = $query->count();
+        return inertia('Admin/Post/Index', compact('posts', 'postsCount'));
     }
 
     /**
@@ -24,15 +30,20 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::query()->select(['id', 'title'])->get();
+        return inertia('Admin/Post/Create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $storeRequest)
     {
-        //
+        $data = $storeRequest->validated();
+        $data['profile_id'] = auth('web')->user()->profiles[0]->id;
+        PostService::store($data);
+
+        return response('Пост успешно создан!');
     }
 
     /**

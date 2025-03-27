@@ -17,5 +17,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/admin', function () {
+    return Inertia::render('Admin/AdminIndex');
+})->middleware(['auth'])->name('admin.index');
+
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

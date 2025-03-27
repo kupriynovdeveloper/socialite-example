@@ -1,10 +1,12 @@
 <script>
 import { Link } from "@inertiajs/vue3";
+import AdminLayouts from "@/Layouts/AdminLayouts.vue";
 export default {
     name: "Show",
     props: {
         'post': Object
     },
+    layout: AdminLayouts,
      components: {
         Link
      }
