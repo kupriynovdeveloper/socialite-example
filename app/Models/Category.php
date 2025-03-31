@@ -20,18 +20,6 @@ class Category extends Model
         'title',
     ];
 
-/*    protected static function booted()
-    {
-        static::created(function (Model $model) {
-            Log::create(array(
-                'name_model' => $model::class,
-                'name_event' => self::EVENT_CREATED,
-                'old_field' => ['1' => '111'],
-                'new_field' => ['2' => '222']
-            ));
-        });
-    }*/
-
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);

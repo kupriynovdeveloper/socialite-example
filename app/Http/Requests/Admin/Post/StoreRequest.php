@@ -26,7 +26,16 @@ class StoreRequest extends FormRequest
             'text' => 'required|string',
             'published_at' => 'required|date_format:Y-m-d H:i',
             'category_id' => 'required|integer|exists:categories,id',
+            'images' => 'nullable|array|max:5',
+            'images.*' => 'nullable|file|image|mimes:jpg,jpeg,png|max:2048'
         ];
+    }
+
+    protected function passedValidation()
+    {
+        return $this->merge([
+            'profile_id' => auth('web')->user()->profiles[0]->id
+        ]);
     }
 
     public function messages(): array
@@ -40,6 +49,8 @@ class StoreRequest extends FormRequest
             'published_at.date_format' => 'Поле даты в формате Y-m-d H:i',
             'category_id.required' => 'Поле должно быть заполнено',
             'category_id.exists' => 'Выбранной категории нет',
+            'images.*.image' => 'Файл :attribute должен быть изображением.',
+            'images.*.max' => 'Размер файла :attribute не должен превышать 2 МБ.',
         ];
     }
 }

@@ -36,7 +36,11 @@ export default {
                 this.post.published_at = this.post.published_at.replace("T", " ");
             }
 
-            axios.post(route('admin.posts.store'), this.post)
+            axios.post(route('admin.posts.store'), this.post, {
+                'headers': {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then(res => {
                     if (res.status === 200) {
                         this.flashMessage = res.data;
@@ -52,6 +56,9 @@ export default {
                         this.errors = error.response.data.errors;
                     }
                 })
+        },
+        addImg(event) {
+            this.post.images = event.target.files;
         }
     }
 }
@@ -96,6 +103,15 @@ export default {
                        :class="{ 'border-red-500': this.errors.message }"
                 />
                 <p v-if="errors.published_at" class="text-red-500 text-xs mt-1">{{ errors.published_at[0] }}</p>
+            </div>
+
+            <!-- File -->
+            <div class="mb-4">
+                <input @change="addImg" type="file" multiple
+                       class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       :class="{ 'border-red-500': this.errors.message }"
+                />
+                <p v-if="errors.images" class="text-red-500 text-xs mt-1">{{ errors.images[0] }}</p>
             </div>
 
             <!-- Category ID -->

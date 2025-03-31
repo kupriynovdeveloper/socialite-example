@@ -8,9 +8,11 @@ use App\Http\Resources\Post\PostResource;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\Image\ImageService;
 use App\Services\Post\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -20,7 +22,7 @@ class PostController extends Controller
     public function index()
     {
         $query = Post::query();
-        $posts = PostResource::collection($query->get())->resolve();
+        $posts = PostResource::collection($query->latest()->get())->resolve();
         $postsCount = $query->count();
         return inertia('Admin/Post/Index', compact('posts', 'postsCount'));
     }
@@ -39,10 +41,11 @@ class PostController extends Controller
      */
     public function store(StoreRequest $storeRequest)
     {
-        $data = $storeRequest->validated();
-        $data['profile_id'] = auth('web')->user()->profiles[0]->id;
-        PostService::store($data);
-
+        $data = $storeRequest->validationData();
+        $post = PostService::store($data);
+        if ($storeRequest->hasFile('images')) {
+            ImageService::uploadImage($post, $data['images']);
+        }
         return response('Пост успешно создан!');
     }
 
