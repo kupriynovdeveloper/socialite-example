@@ -2,7 +2,6 @@
 import AdminLayouts from "@/Layouts/AdminLayouts.vue";
 import { Link } from "@inertiajs/vue3";
 import axios from "axios";
-import { router } from "@inertiajs/vue3"
 
 export default {
     name: "Create",
@@ -45,11 +44,6 @@ export default {
                     if (res.status === 200) {
                         this.flashMessage = res.data;
                     }
-                    /*router.visit(route('admin.posts.index'), {
-                        method: 'get',
-                        preserveState: false, // Перезагружает страницу
-                        preserveScroll: true
-                    })*/
                 })
                 .catch(error => {
                     if (error.response && error.response.data.errors) {

@@ -1,6 +1,8 @@
 <script>
 import { Link } from "@inertiajs/vue3";
 import AdminLayouts from "@/Layouts/AdminLayouts.vue";
+import axios from "axios";
+import { router } from "@inertiajs/vue3"
 
 export default {
     name: "Index",
@@ -11,6 +13,36 @@ export default {
     layout: AdminLayouts,
     components: {
         Link
+    },
+    data() {
+        return {
+            flashMessage: null
+        }
+    },
+    updated() {
+        if (this.flashMessage) {
+            setTimeout(() => {
+                this.flashMessage = null;
+                router.visit(route('admin.posts.index'), {
+                    method: 'get',
+                    preserveState: false, // Перезагружает страницу
+                    preserveScroll: true
+                })
+            }, 2000)
+        }
+    },
+    methods: {
+        deletePost(post) {
+            axios.delete(route('admin.posts.destroy', post))
+                .then(res => {
+                    if (res.status === 200) {
+                        this.flashMessage = res.data;
+                    }
+                })
+                .catch(error => {
+
+                })
+        }
     }
 }
 </script>
@@ -20,7 +52,9 @@ export default {
     <main class="flex-1 p-6">
         <!-- Шапка -->
         <div class="flex justify-between items-center mb-6">
-            {{this.$page.props.flash}}
+            <div v-if="flashMessage" class="bg-green-500 text-white p-3 rounded mb-4">
+                {{ flashMessage }}
+            </div>
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Управление контентом</h1>
                 <p class="text-gray-600">Всего постов: {{ postsCount }}</p>
@@ -73,7 +107,7 @@ export default {
                     </td>
                     <td class="px-4 py-4">
                         <button class="text-blue-500 hover:text-blue-700 mr-2">✏️</button>
-                        <button class="text-red-500 hover:text-red-700">🗑️</button>
+                        <a @click.prevent="deletePost(post.id)" href="#"><button class="text-red-500 hover:text-red-700">🗑️</button></a>
                     </td>
                 </tr>
                 </tbody>
